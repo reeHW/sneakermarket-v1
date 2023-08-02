@@ -51,8 +51,14 @@
         </tbody>
       </table>
       <p class="btn_set">
-        <button type="button" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정</button>
-        <button type="button" onclick="deletePost();" class="btns btn_bdr1 btn_mid">삭제</button>
+        <th:block th:if="${post.writer == session.loginMember.nickname}">
+          <button type="button" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정</button>
+          <button type="button" onclick="deletePost();" class="btns btn_bdr1 btn_mid">삭제</button>
+        </th:block>
+        <th:block th:unless="${post.writer == session.loginMember.nickname}">
+          <button type="button" class="btns btn_bdr4 btn_mid" style="display: none;">수정</button>
+          <button type="button" class="btns btn_bdr1 btn_mid" style="display: none;">삭제</button>
+        </th:block>
         <button type="button" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로</button>
       </p>
       <!--/* 댓글 작성 */-->
@@ -290,8 +296,10 @@
 
     // 댓글 HTML draw
     function drawComments(list) {
+      var userNickname = /*[[${session.loginMember.nickname}]]*/ '';
+      console.log(userNickname);
 
-      if ( !list.length ) {
+      if (!list.length) {
         document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
         return false;
       }
@@ -300,20 +308,25 @@
 
       list.forEach(row => {
         commentHtml += `
-                        <div>
-                            <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
-                            <p class="writer">
-                                <em>${row.writer}</em>
-                                <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
-                            </p>
-                            <div class="cont"><div class="txt_con">${row.content}</div></div>
-                            <p class="func_btns">
-                                <button type="button" onclick="openCommentUpdatePopup(${row.id});" class="btns"><span class="icons icon_modify">수정</span></button>
-                                <button type="button" onclick="deleteComment(${row.id});" class="btns"><span class="icons icon_del">삭제</span></button>
-                            </p>
-                        </div>
-                    `;
-      })
+      <div>
+        <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
+        <p class="writer">
+          <em>${row.writer}</em>
+          <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
+        </p>
+        <div class="cont"><div class="txt_con">${row.content}</div></div>
+        <p class="func_btns">
+          ${row.writer === userNickname ?
+                `<button type="button" onclick="openCommentUpdatePopup(${row.id});" class="btns">
+              <span class="icons icon_modify">수정</span>
+            </button>
+            <button type="button" onclick="deleteComment(${row.id});" class="btns">
+              <span class="icons icon_del">삭제</span>
+            </button>` : ''}
+        </p>
+      </div>
+    `;
+      });
 
       document.querySelector('.cm_list').innerHTML = commentHtml;
     }

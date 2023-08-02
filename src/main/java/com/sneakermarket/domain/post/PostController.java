@@ -25,6 +25,8 @@ public class PostController {
     private final FileUtils fileUtils;
 
     //사용자에게 메시지 전달하고, 페이지를 리다이렉트함.
+
+
     private String showMessageAndRedirect(final MessageDto params, Model model){
         model.addAttribute("params", params);
         return "common/messageRedirect";

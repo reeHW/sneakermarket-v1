@@ -28,7 +28,7 @@ public interface MemberMapper {
      * 회원 정보 저장 (회원가입)
      * @param member
      */
-    void save(Member member);
+    Member save(Member member);
 
 
 

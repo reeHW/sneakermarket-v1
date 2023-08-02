@@ -32,6 +32,7 @@ public class MemberDto {
         @Pattern(regexp = "^[0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣_]*$", message = "특수문자는 불가능합니다")
         private String nickname;
 
+
     }
 
     @Getter

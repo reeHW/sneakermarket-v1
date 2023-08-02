@@ -2,8 +2,6 @@ package com.sneakermarket.domain.member;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 @Getter
 public class Member {
@@ -23,5 +21,7 @@ public class Member {
         this.email = email;
         this.password = password;
     }
+
+
 
 }
